@@ -1,20 +1,21 @@
 import React from 'react'
-import { useTaskListStore } from './store'
+import { Card, Space } from 'antd'
+import { Button } from 'antd'
+import { ToDoEl, ButtonWrapper } from './stylized_components/stylizedComponents'
 
 const ToDo = ({ attributes }) => {
-  const { addTask, tasksList } = useTaskListStore((state) => state)
-  const testClick = () => {
-    addTask({ ...attributes })
-    console.log(tasksList, ' from todo', attributes.id)
-  }
   return (
-    <div onClick={testClick}>
-      {attributes.attributes.status === 'Не выполнена' ? (
-        <div className="to_do_red">{attributes.attributes.title}</div>
-      ) : (
-        <div className="to_do_green">{attributes.attributes.title}</div>
-      )}
-    </div>
+    <ToDoEl>
+      <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
+        <Card title={attributes.attributes.title} size="small">
+          <p>{attributes.attributes.description}</p>
+        </Card>
+        <ButtonWrapper>
+          <Button type="default">Add to Favorites</Button>
+          <Button type="default">Done</Button>
+        </ButtonWrapper>
+      </Space>
+    </ToDoEl>
   )
 }
 

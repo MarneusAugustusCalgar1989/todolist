@@ -1,30 +1,29 @@
 import { useEffect } from 'react'
 import ToDo from './components/ToDo'
 import { useTaskListStore } from './components/store'
+import {
+  AppEl,
+  TodoListHeader,
+} from './components/stylized_components/stylizedComponents'
+import SorterFilter from './components/SorterFilter'
+import TaskAdder from './components/TaskAdder'
+import { Divider } from 'antd'
 function App() {
-  const { tasksList, setTasksList } = useTaskListStore((state) => state)
+  const { tasksList, getTasksFromServer } = useTaskListStore((state) => state)
+  const dataUrl = 'https://cms.laurence.host/api/tasks'
 
   useEffect(() => {
-    const getDataFromServer = async () => {
-      const taskBase = 'https://cms.laurence.host/api/tasks'
-      let response = await fetch(taskBase)
-
-      if (response.ok) {
-        let json = await response.json()
-        console.log('Main reload')
-
-        return setTasksList(json.data)
-      } else {
-        alert('Ошибка HTTP: ' + response.status)
-      }
-    }
-    getDataFromServer()
+    getTasksFromServer(dataUrl)
   }, [])
 
   return (
-    <div className="App">
-      <h1>TODOLIST</h1>
-
+    <AppEl>
+      <TodoListHeader>TODOLIST</TodoListHeader>
+      <SorterFilter />
+      <TaskAdder />
+      <Divider>
+        <TodoListHeader>Tasks list</TodoListHeader>
+      </Divider>
       {tasksList.length && tasksList[0].attributes ? (
         tasksList.map((el) => {
           return <ToDo key={el.id} attributes={el} />
@@ -32,7 +31,7 @@ function App() {
       ) : (
         <p>Nothing to show</p>
       )}
-    </div>
+    </AppEl>
   )
 }
 
