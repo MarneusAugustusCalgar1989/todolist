@@ -1,25 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
-
+import { useEffect } from 'react'
+import ToDo from './components/ToDo'
+import { useTaskListStore } from './components/store'
 function App() {
+  const { tasksList, setTasksList } = useTaskListStore((state) => state)
+
+  useEffect(() => {
+    const getDataFromServer = async () => {
+      const taskBase = 'https://cms.laurence.host/api/tasks'
+      let response = await fetch(taskBase)
+
+      if (response.ok) {
+        let json = await response.json()
+        console.log('Main reload')
+
+        return setTasksList(json.data)
+      } else {
+        alert('Ошибка HTTP: ' + response.status)
+      }
+    }
+    getDataFromServer()
+  }, [])
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>TODOLIST</h1>
+
+      {tasksList.length && tasksList[0].attributes ? (
+        tasksList.map((el) => {
+          return <ToDo key={el.id} attributes={el} />
+        })
+      ) : (
+        <p>Nothing to show</p>
+      )}
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
