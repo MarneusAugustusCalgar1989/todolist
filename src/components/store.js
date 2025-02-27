@@ -16,5 +16,22 @@ export const useTaskListStore = create((set) => ({
     }
   },
 
+  addNewTask: (task) =>
+    set((state) => ({ tasksList: [...state.tasksList, ...task] })),
   setTasksList: (newTasksList) => set((state) => ({ tasksList: newTasksList })),
+  changeTaskStatus: (taskId, taskStatus) =>
+    set((state) => {
+      const found = state.tasksList.find((el) => el.id === taskId)
+      console.log(found)
+      found.attributes.status = taskStatus
+      return state.tasksList
+    }),
+  filter: '',
+  setFilter: (filter) => set((state) => ({ filter: filter })),
+  // showFilteredTask: (filter) =>
+  //   set((state) => ({
+  //     tasksList: filter
+  //       ? state.tasksList.filter((el) => el.attributes.status === filter)
+  //       : state.tasksList,
+  //   })),
 }))

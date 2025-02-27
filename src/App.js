@@ -9,7 +9,9 @@ import SorterFilter from './components/SorterFilter'
 import TaskAdder from './components/TaskAdder'
 import { Divider } from 'antd'
 function App() {
-  const { tasksList, getTasksFromServer } = useTaskListStore((state) => state)
+  const { tasksList, getTasksFromServer, filter } = useTaskListStore(
+    (state) => state
+  )
   const dataUrl = 'https://cms.laurence.host/api/tasks'
 
   useEffect(() => {
@@ -24,13 +26,20 @@ function App() {
       <Divider>
         <TodoListHeader>Tasks list</TodoListHeader>
       </Divider>
-      {tasksList.length && tasksList[0].attributes ? (
+      {!filter &&
         tasksList.map((el) => {
-          return <ToDo key={el.id} attributes={el} />
-        })
-      ) : (
-        <p>Nothing to show</p>
-      )}
+          if (el.attributes) {
+            return <ToDo key={el.id} el={el} />
+          }
+        })}
+
+      {filter &&
+        tasksList.map((el) => {
+          if (el.attributes.status === filter) {
+            return <ToDo key={el.id} el={el} />
+          }
+        })}
+      {tasksList.length === 0 && <TodoListHeader>Loading</TodoListHeader>}
     </AppEl>
   )
 }

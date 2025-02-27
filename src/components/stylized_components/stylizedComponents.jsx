@@ -2,7 +2,6 @@ import styled from 'styled-components'
 
 export const AppEl = styled.div`
   width: clamp(290px, 80%, 800px);
-
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -14,10 +13,8 @@ export const TodoListHeader = styled.h1`
 
 export const ToDoEl = styled.div`
     width: clamp(290px, 80%, 800px);
-
     margin-bottom: 2rem;
-    cursor: pointer;
-   
+    cursor: pointer;   
     }
   `
 export const ButtonWrapper = styled.div`
@@ -37,10 +34,8 @@ export const SorterFilterStyled = styled.div`
 export const InputField = styled.div`
   min-width: 90%;
   min-height: 5rem;
-
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: space-between;
-  margin-bottom: 2rem;
 `
